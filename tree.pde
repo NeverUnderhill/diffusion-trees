@@ -1,6 +1,5 @@
 class Tree {
     Node root;
-    static final float ATTACH_DISTANCE = 17;
 
     Tree(PVector rootPos) {
         root = new Node(rootPos, null);
@@ -24,8 +23,9 @@ class Tree {
                 continue;
             }
             for (Node n: nodes) {
-                if (n.pos.dist(particles.get(j)) < ATTACH_DISTANCE) {
-                    n.addChild(particles.get(j));
+                if (n.pos.dist(particles.get(j)) < n.attachDistance) {
+                    Node newNode = n.addChild(particles.get(j));
+                    newNode.attachDistance = n.attachDistance * 0.8;
                     particles.set(j, null);
                     break;
                 }
@@ -38,6 +38,7 @@ class Node {
     static final float RADIUS = 3;
     PVector pos;
     Node parent;
+    float attachDistance = 100;
     ArrayList<Node> children;
     
     Node(PVector pos, Node parent) {
@@ -46,8 +47,10 @@ class Node {
         this.children = new ArrayList<Node>();
     }
     
-    void addChild(PVector pos) {
-        children.add(new Node(pos, this));
+    Node addChild(PVector pos) {
+        Node n = new Node(pos, this);
+        children.add(n);
+        return n;
     }
     
     void draw() {
@@ -55,7 +58,7 @@ class Node {
        stroke(255);
        ellipse(pos.x, pos.y, RADIUS, RADIUS);        
        for (Node n: this.children) {
-           line(pos.x, pos.y, n.pos.x, n.pos.y);
+           bline(pos, n.pos);
            n.draw();
        }
     }

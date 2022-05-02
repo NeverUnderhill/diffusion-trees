@@ -1,7 +1,7 @@
 ArrayList<PVector> generateParticles(int n) {
     ArrayList<PVector> particles = new ArrayList<PVector>(); 
     for (int i = 0; i < n; ++i) {
-        particles.add(new PVector(random(0, width), random(0, height)));
+        particles.add(new PVector(random(width * 0.45, width * 0.55), random(0, height * 0.25)));
     }
     return particles;
 }
@@ -16,7 +16,7 @@ void drawParticles(ArrayList<PVector> particles) {
     noStroke();
     for (PVector p : particles) {
         if (p != null) {
-            drawPoint(p, 3);      
+            drawPoint(p, 4);      
         }
     }
 }
